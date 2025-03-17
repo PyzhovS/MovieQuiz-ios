@@ -72,6 +72,7 @@ final class MovieQuizViewController: UIViewController {
         
     }
   
+    
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         textLabel.text = step.question
@@ -81,20 +82,30 @@ final class MovieQuizViewController: UIViewController {
    
     private func showAnswerResult(isCorrect: Bool) {
         imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 6
+        imageView.layer.borderWidth = 8
         imageView.layer.borderColor = UIColor.white.cgColor
-        imageView.layer.cornerRadius = 6
+        imageView.layer.cornerRadius = 20
       
-        if isCorrect == true {imageView.layer.borderColor = UIColor.ypGreen.cgColor
+        if isCorrect {
+            imageView.layer.borderColor = UIColor.ypGreen.cgColor
             correctAnswers += 1
+        } else {
+            imageView.layer.borderColor = UIColor.ypRed.cgColor
         }
-        else {imageView.layer.borderColor = UIColor.ypRed.cgColor}
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.showNextQuestionOrResults()
             
         }
     }
+    
+    // Добавил функцию, которая исключает лишнее нажатие на кнопки(при быстром нажатие), что приводила к неверному результату в конце.
+        private func stopButtonTapped(sender: UIButton) {
+            sender.isEnabled = false
+            DispatchQueue.main.asyncAfter(wallDeadline: .now() + 1.0) {
+                sender.isEnabled = true
+            }
+        }
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questions.count - 1 {
@@ -108,7 +119,8 @@ final class MovieQuizViewController: UIViewController {
             viewNext()
             }
     }
-    
+  
+
     private func show(quiz result: QuizResultsViewModel) {
         let alert = UIAlertController(
             title: result.title,
@@ -123,22 +135,21 @@ final class MovieQuizViewController: UIViewController {
         alert.addAction(action)
 
         self.present(alert, animated: true, completion: nil)
-        
     }
     
-   
     
-    @IBAction private func yesButtonClicked(_ sender: Any) {
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let result = true
     showAnswerResult(isCorrect: result == currentQuestion.correctAnswer)
-        
+        stopButtonTapped(sender: sender)
        
     }
-    @IBAction private func noButtonClicked(_ sender: Any) {
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let result = false
         showAnswerResult(isCorrect: result == currentQuestion.correctAnswer)
+        stopButtonTapped(sender: sender)
     }
     
     @IBOutlet private var imageView: UIImageView!
