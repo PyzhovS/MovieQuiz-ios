@@ -117,6 +117,7 @@ final class MovieQuizViewController: UIViewController {
         
         let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
                self.currentQuestionIndex = 0
+               self.correctAnswers = 0
                self.viewNext()
         }
         alert.addAction(action)
