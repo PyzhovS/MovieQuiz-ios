@@ -9,7 +9,10 @@ final class MovieQuizViewController: UIViewController {
     
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
-    private let questions: [QuizQuestion] = QuizQuestionMock.questions
+    private let questionsAmount: Int = 10
+    private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
+    private var currentQuestion: QuizQuestion?
+    //private let questions: [QuizQuestion] = QuestionFactory.questions
     
     // MARK: - Lifecycle
     
@@ -21,17 +24,19 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Setup Methods
     
     private func viewNext () {
-        let currentQuestion = questions[currentQuestionIndex]
-        let viewModel = convert(model: currentQuestion)
-        show(quiz: viewModel)
+        if let firstQuestion = questionFactory.requestNextQuestion() {
+            currentQuestion = firstQuestion
+            let viewModel = convert(model: firstQuestion )
+            show(quiz: viewModel)
+            
+        }
         imageView.layer.borderColor = UIColor.clear.cgColor
     }
-    
     private func convert(model: QuizQuestion) -> QuizStepModel {
         let questionStep = QuizStepModel(
             image: UIImage(named: model.image) ?? UIImage(),
             question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)")
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
         return questionStep
     }
   
@@ -60,7 +65,7 @@ final class MovieQuizViewController: UIViewController {
     }
     
     // Добавил функцию, которая исключает лишнее нажатие на кнопки(при быстром нажатие), что приводила к неверному результату в конце.
-        private func stopButtonTapped(sender: UIButton) {
+    private func stopButtonTapped(sender: UIButton) {
             sender.isEnabled = false
             DispatchQueue.main.asyncAfter(wallDeadline: .now() + 1.0) {
                 sender.isEnabled = true
@@ -68,11 +73,13 @@ final class MovieQuizViewController: UIViewController {
         }
     
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questions.count - 1 {
-            let resultFinal = "Ваш результат: \(correctAnswers) / \(questions.count)"
+        if currentQuestionIndex == questionsAmount - 1 {
+            let text = correctAnswers == questionsAmount ?
+                        "Поздравляем, вы ответили на 10 из 10!" :
+                        "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
             let final = QuizResultsModel(title: "Этот раунд окончен!" ,
-                                             text: resultFinal,
-                                             buttonText:"Сыграть ещё раз" )
+                                         text: text,
+                                         buttonText:"Сыграть ещё раз" )
             show(quiz: final)
             
         } else { currentQuestionIndex += 1
@@ -100,14 +107,14 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        let currentQuestion = questions[currentQuestionIndex]
+        guard let currentQuestion = currentQuestion else {return}
         let result = true
     showAnswerResult(isCorrect: result == currentQuestion.correctAnswer)
         stopButtonTapped(sender: sender)
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        let currentQuestion = questions[currentQuestionIndex]
+        guard let currentQuestion = currentQuestion else {return}
         let result = false
         showAnswerResult(isCorrect: result == currentQuestion.correctAnswer)
         stopButtonTapped(sender: sender)
