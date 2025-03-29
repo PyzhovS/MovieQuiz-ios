@@ -1,6 +1,8 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+
+    
     // MARK: - Properties
   
     @IBOutlet private var imageView: UIImageView!
@@ -10,26 +12,38 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     private let questionsAmount: Int = 10
-    private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
+    private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
-    //private let questions: [QuizQuestion] = QuestionFactory.questions
+    
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let questionFactory = QuestionFactory()
+        questionFactory.delegate = self
+        self.questionFactory = questionFactory
         viewNext()
     }
+    
+    // MARK: - QuestionFactoryDelegate
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+               return
+           }
+
+           currentQuestion = question
+           let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quiz: viewModel)
+        }
+    }
+    
     
     // MARK: - Setup Methods
     
     private func viewNext () {
-        if let firstQuestion = questionFactory.requestNextQuestion() {
-            currentQuestion = firstQuestion
-            let viewModel = convert(model: firstQuestion )
-            show(quiz: viewModel)
-            
-        }
+        questionFactory?.requestNextQuestion()
         imageView.layer.borderColor = UIColor.clear.cgColor
     }
     private func convert(model: QuizQuestion) -> QuizStepModel {
@@ -83,7 +97,7 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: final)
             
         } else { currentQuestionIndex += 1
-            viewNext()
+            self.viewNext()
             }
     }
   

@@ -1,8 +1,11 @@
 import UIKit
 
 
+
+
 class QuestionFactory:QuestionFactoryProtocol {
-     let questions: [QuizQuestion] = [
+    weak var delegate: QuestionFactoryDelegate?
+    let questions: [QuizQuestion] = [
         QuizQuestion(
             image: "The Godfather",
             text: "Рейтинг этого фильма больше чем 6?",
@@ -44,11 +47,17 @@ class QuestionFactory:QuestionFactoryProtocol {
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false)
     ]
-
-    func requestNextQuestion()->QuizQuestion? {
-        guard let index = (0..<questions.count).randomElement() else { return nil}
+   
+    
+    
+    func requestNextQuestion() {
+        guard let index = (0..<questions.count).randomElement() else {
+            delegate?.didReceiveNextQuestion(question: nil)
+            return
+        }
         
-        return questions[safe: index]
+       let questions = questions[safe: index]
+        delegate?.didReceiveNextQuestion(question: questions)
     }
     
 }
