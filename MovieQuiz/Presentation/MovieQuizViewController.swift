@@ -14,7 +14,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
-    
+    private var alertPresenter:AlertPresenter?
     
     // MARK: - Lifecycle
     
@@ -23,6 +23,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let questionFactory = QuestionFactory()
         questionFactory.delegate = self
         self.questionFactory = questionFactory
+        let alertPresenter = AlertPresenter()
+        alertPresenter.viewController = self
+        self.alertPresenter = alertPresenter
+    
         viewNext()
     }
     
@@ -91,33 +95,23 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             let text = correctAnswers == questionsAmount ?
                         "Поздравляем, вы ответили на 10 из 10!" :
                         "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
-            let final = QuizResultsModel(title: "Этот раунд окончен!" ,
-                                         text: text,
-                                         buttonText:"Сыграть ещё раз" )
-            show(quiz: final)
+            let final = AlertModel(title: "Этот раунд окончен!" ,
+                                   message: text,
+                                   buttonText:"Сыграть ещё раз",
+                                   completion: {[weak self] in
+                self?.currentQuestionIndex = 0
+                self?.correctAnswers = 0
+                self?.viewNext()
+            }
+        )
+                            
+            alertPresenter?.show(quiz: final)
             
         } else { currentQuestionIndex += 1
             self.viewNext()
             }
     }
   
-    private func show(quiz result: QuizResultsModel) {
-        let alert = UIAlertController(
-            title: result.title,
-            message: result.text,
-            preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
-            guard let self = self else {return}
-               self.currentQuestionIndex = 0
-               self.correctAnswers = 0
-               self.viewNext()
-        }
-        alert.addAction(action)
-
-        self.present(alert, animated: true, completion: nil)
-    }
-    
     // MARK: - Actions
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
