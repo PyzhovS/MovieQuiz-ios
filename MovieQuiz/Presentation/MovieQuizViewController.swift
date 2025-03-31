@@ -95,16 +95,21 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             let text = correctAnswers == questionsAmount ?
                         "Поздравляем, вы ответили на 10 из 10!" :
                         "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
-            let final = AlertModel(title: "Этот раунд окончен!" ,
-                                   message: text,
-                                   buttonText:"Сыграть ещё раз",
-                                   completion: {[weak self] in
-                self?.currentQuestionIndex = 0
-                self?.correctAnswers = 0
-                self?.viewNext()
-            }
-        )
-                            
+           
+            let resultsModel = QuizResultsModel(title: "Этот раунд окончен!" ,
+                                         text: text,
+                                   buttonText:"Сыграть ещё раз")
+          
+            let final = AlertModel (title:resultsModel.title,
+                                                     message: resultsModel.text,
+                                                     buttonText: resultsModel.buttonText,
+                                  completion: {[weak self] in
+                                  self?.currentQuestionIndex = 0
+                                  self?.correctAnswers = 0
+                                  self?.viewNext()
+                              })
+            
+            
             alertPresenter?.show(quiz: final)
             
         } else { currentQuestionIndex += 1
