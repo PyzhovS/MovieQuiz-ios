@@ -15,7 +15,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var alertPresenter:AlertPresenterProtocol?
-    private var statisticService: StatisticServiceProtocol?
+    private var statisticService: StatisticServiceProtocol!
     
     // MARK: - Lifecycle
     
