@@ -1,10 +1,13 @@
 import UIKit
 
-class AlertPresenter {
+class AlertPresenter: AlertPresenterProtocol{
+   
     weak var viewController: UIViewController?
+   
     init(viewController: UIViewController? = nil) {
        self.viewController = viewController
     }
+    
     func show(quiz result: AlertModel) {
        let alert = UIAlertController(
            title: result.title,
@@ -19,5 +22,4 @@ class AlertPresenter {
 
         viewController?.present(alert, animated: true, completion: nil)
    }
-    
 }

@@ -14,7 +14,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
-    private var alertPresenter:AlertPresenter?
+    private var alertPresenter:AlertPresenterProtocol?
+    private var statisticService: StatisticServiceProtocol?
     
     // MARK: - Lifecycle
     
@@ -26,6 +27,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let alertPresenter = AlertPresenter()
         alertPresenter.viewController = self
         self.alertPresenter = alertPresenter
+        let statisticService = StatisticServiceImplementation()
+        self.statisticService = statisticService
     
         viewNext()
     }
@@ -92,26 +95,30 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
-            let text = correctAnswers == questionsAmount ?
-                        "Поздравляем, вы ответили на 10 из 10!" :
-                        "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
+            statisticService.store(correct: correctAnswers, total: questionsAmount)
+            let text = "Ваш результат: \(correctAnswers)/\(questionsAmount )\n "
+            + "Количество сыграных квизов:\(statisticService.gamesCount)\n"
+            + "Рекорд:\(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))\n"
+            + "Средняя точность:\(String(format: "%.2f", statisticService.totalAccuracy))%"
            
             let resultsModel = QuizResultsModel(title: "Этот раунд окончен!" ,
                                          text: text,
                                    buttonText:"Сыграть ещё раз")
           
-            let final = AlertModel (title:resultsModel.title,
-                                                     message: resultsModel.text,
-                                                     buttonText: resultsModel.buttonText,
-                                  completion: {[weak self] in
-                                  self?.currentQuestionIndex = 0
-                                  self?.correctAnswers = 0
-                                  self?.viewNext()
-                              })
+            showAlert(model: resultsModel)
             
-            
-            alertPresenter?.show(quiz: final)
-            
+            func showAlert ( model: QuizResultsModel){
+                let final = AlertModel (title:model.title,
+                                        message: model.text,
+                                        buttonText: model.buttonText,
+                                        completion: {[weak self] in
+                    self?.currentQuestionIndex = 0
+                    self?.correctAnswers = 0
+                    self?.viewNext()
+                })
+                
+                alertPresenter?.show(quiz: final)
+            }
         } else { currentQuestionIndex += 1
             self.viewNext()
             }
