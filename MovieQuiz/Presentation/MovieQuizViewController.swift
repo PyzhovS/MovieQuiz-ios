@@ -14,8 +14,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
-    private var alertPresenter:AlertPresenterProtocol?
-    private var statisticService: StatisticServiceProtocol!
+    private var alertPresenter: AlertPresenterProtocol?
+    private var statisticService: StatisticServiceProtocol?
     
     // MARK: - Lifecycle
     
@@ -95,11 +95,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
-            statisticService.store(correct: correctAnswers, total: questionsAmount)
-            let text = "Ваш результат: \(correctAnswers)/\(questionsAmount )\n "
-            + "Количество сыграных квизов:\(statisticService.gamesCount)\n"
-            + "Рекорд:\(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))\n"
-            + "Средняя точность:\(String(format: "%.2f", statisticService.totalAccuracy))%"
+            statisticService?.store(correct: correctAnswers, total: questionsAmount)
+            guard let statisticService else { return }
+            let text = """
+            Ваш результат: \(correctAnswers)/\(questionsAmount )
+            Количество сыграных квизов:\(statisticService.gamesCount)
+            Рекорд:\(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString)
+            Средняя точность:\(String(format: "%.2f", statisticService.totalAccuracy))%
+            """
            
             let resultsModel = QuizResultsModel(title: "Этот раунд окончен!" ,
                                          text: text,
