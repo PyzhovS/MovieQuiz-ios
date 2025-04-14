@@ -1,10 +1,10 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
-
     
     // MARK: - Properties
   
+    @IBOutlet weak var ActivityIndicator: UIActivityIndicatorView!
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
@@ -29,7 +29,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         self.alertPresenter = alertPresenter
         let statisticService = StatisticServiceImplementation()
         self.statisticService = statisticService
-    
         viewNext()
     }
     
@@ -46,8 +45,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
-    
     // MARK: - Setup Methods
+    private func showLoadingIndicator() {
+        ActivityIndicator.isHidden = false
+        ActivityIndicator.startAnimating()
+    }
+    private func hideLoadingIndicator() {
+        ActivityIndicator.isHidden = true
+        ActivityIndicator.stopAnimating()
+    }
     
     private func viewNext () {
         questionFactory?.requestNextQuestion()
@@ -125,6 +131,22 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         } else { currentQuestionIndex += 1
             self.viewNext()
             }
+    }
+    
+    private func showNetworkError(message: String) {
+        hideLoadingIndicator()
+        
+        let alertErorr = AlertModel(title: "Ошибка",
+                                    message: message,
+                                    buttonText: "Попробовать ещё раз",
+                                    completion: { [weak self] in
+            
+            self?.currentQuestionIndex = 0
+            self?.correctAnswers = 0
+            self?.questionFactory?.requestNextQuestion()
+            
+        })
+        alertPresenter?.show(quiz: alertErorr)
     }
   
     // MARK: - Actions

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_3" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -26,19 +26,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="bHp-g0-bty">
-                                <rect key="frame" x="20" y="72" width="362" height="768"/>
+                                <rect key="frame" x="20" y="134" width="362" height="672"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qk0-69-YWZ">
-                                        <rect key="frame" x="0.0" y="0.0" width="362" height="23.666666666666668"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="362" height="9"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вопрос:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l2L-op-OTH" userLabel="Question Title Label">
-                                                <rect key="frame" x="0.0" y="0.0" width="326" height="23.666666666666668"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="326" height="9"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="1/10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YQ1-tb-wCz" userLabel="Index Label">
-                                                <rect key="frame" x="326" y="0.0" width="36" height="23.666666666666668"/>
+                                                <rect key="frame" x="326" y="0.0" width="36" height="9"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
@@ -46,7 +46,7 @@
                                         </subviews>
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cmn-i9-5wo" userLabel="Preview Image">
-                                        <rect key="frame" x="0.0" y="43.666666666666686" width="362" height="543"/>
+                                        <rect key="frame" x="0.0" y="29" width="362" height="543"/>
                                         <color key="backgroundColor" name="YP White"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="cmn-i9-5wo" secondAttribute="height" multiplier="2:3" id="Lzz-Jh-FpM"/>
@@ -58,13 +58,13 @@
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y2g-OU-mFW" userLabel="Question Label">
-                                        <rect key="frame" x="0.0" y="606.66666666666663" width="362" height="81.333333333333371"/>
+                                        <rect key="frame" x="0.0" y="592" width="362" height="0.0"/>
                                         <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                         <color key="textColor" name="YP White"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="KrY-Re-Bu0">
-                                        <rect key="frame" x="0.0" y="708" width="362" height="60"/>
+                                        <rect key="frame" x="0.0" y="612" width="362" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BtG-2o-EI9" userLabel="Кнопка Нет">
                                                 <rect key="frame" x="0.0" y="0.0" width="171" height="60"/>
@@ -111,17 +111,23 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="LTI-WG-lpt">
+                                <rect key="frame" x="191" y="427" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="bHp-g0-bty" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="4PF-tv-4n0"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="bHp-g0-bty" secondAttribute="bottom" id="5ay-Np-pf9"/>
+                            <constraint firstItem="LTI-WG-lpt" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="ade-ea-gDd"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="bHp-g0-bty" secondAttribute="trailing" constant="20" id="ezF-3v-lbh"/>
                             <constraint firstItem="bHp-g0-bty" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="kRX-Me-oL5"/>
+                            <constraint firstItem="LTI-WG-lpt" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="yi5-FE-aaz"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="ActivityIndicator" destination="LTI-WG-lpt" id="Ru5-uU-GPJ"/>
                         <outlet property="counterLabel" destination="YQ1-tb-wCz" id="WuS-gY-af2"/>
                         <outlet property="imageView" destination="cmn-i9-5wo" id="0XQ-Cb-i4L"/>
                         <outlet property="textLabel" destination="Y2g-OU-mFW" id="mDv-pi-cnC"/>
@@ -129,7 +135,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-904.4776119402984" y="-63.157894736842103"/>
+            <point key="canvasLocation" x="-3488" y="-86"/>
         </scene>
     </scenes>
     <resources>
