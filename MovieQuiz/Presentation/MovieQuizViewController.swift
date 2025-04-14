@@ -21,14 +21,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let questionFactory = QuestionFactory()
-        questionFactory.delegate = self
-        self.questionFactory = questionFactory
+        questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
+        //questionFactory.delegate = self
+        questionFactory?.loadData()
+        //self.questionFactory = questionFactory
         let alertPresenter = AlertPresenter()
         alertPresenter.viewController = self
         self.alertPresenter = alertPresenter
         let statisticService = StatisticServiceImplementation()
         self.statisticService = statisticService
+        showLoadingIndicator()
         viewNext()
     }
     
@@ -71,10 +73,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     private func convert(model: QuizQuestion) -> QuizStepModel {
         let questionStep = QuizStepModel(
-            image: UIImage(named: model.image) ?? UIImage(),
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
-        return questionStep
+       return questionStep
     }
   
     private func show(quiz step: QuizStepModel) {
