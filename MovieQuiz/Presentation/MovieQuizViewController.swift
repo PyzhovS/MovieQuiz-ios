@@ -33,6 +33,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     // MARK: - QuestionFactoryDelegate
+    func didLoadDataFromServer() {
+
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message:error.localizedDescription)
+        ActivityIndicator.isHidden = true
+        questionFactory?.requestNextQuestion()
+    }
+    
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
                return
