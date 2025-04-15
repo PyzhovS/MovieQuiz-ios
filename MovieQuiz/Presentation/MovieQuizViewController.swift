@@ -37,13 +37,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - QuestionFactoryDelegate
     func didLoadDataFromServer() {
-
+        ActivityIndicator.isHidden = true
+        questionFactory?.requestNextQuestion()
+        
     }
     
     func didFailToLoadData(with error: Error) {
         showNetworkError(message:error.localizedDescription)
-        ActivityIndicator.isHidden = true
-        questionFactory?.requestNextQuestion()
+       
     }
     
     func didReceiveNextQuestion(question: QuizQuestion?) {
@@ -97,11 +98,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         } else {
             imageView.layer.borderColor = UIColor.ypRed.cgColor
         }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            guard let self = self else {return}
-            self.showNextQuestionOrResults()
-        }
+            
+            showNextQuestionOrResults()
     }
     
     // Добавил функцию, которая исключает лишнее нажатие на кнопки(при быстром нажатие), что приводила к неверному результату в конце.
@@ -138,6 +136,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                     self?.correctAnswers = 0
                     self?.viewNext()
                 })
+                // убрал задержку на 1 секунду. Здесь больше она не нужна
                 
                 alertPresenter?.show(quiz: final)
             }
@@ -153,10 +152,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                                     message: message,
                                     buttonText: "Попробовать ещё раз",
                                     completion: { [weak self] in
-            
-            self?.currentQuestionIndex = 0
-            self?.correctAnswers = 0
-            self?.questionFactory?.requestNextQuestion()
+            guard let self = self else { return }
+            self.currentQuestionIndex = 0
+            self.correctAnswers = 0
+            self.questionFactory?.requestNextQuestion()
             
         })
         alertPresenter?.show(quiz: alertErorr)
