@@ -170,6 +170,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self.correctAnswers = 0
             self.viewNext()
             startButtonTapped()
+            
+            //добавил, что бы при нажати на Попробуй еще раз, была повторная поытка подключения, а не просто белый экран.
+            questionFactory?.loadData()
         })
         alertPresenter?.show(quiz: alertErorr)
     }

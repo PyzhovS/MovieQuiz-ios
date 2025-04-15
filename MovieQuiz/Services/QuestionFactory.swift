@@ -35,11 +35,12 @@ class QuestionFactory:QuestionFactoryProtocol {
                 var imageData = Data()
                 
                 do {
-                    imageData = try Data(contentsOf: movie.imageURL)
+                    imageData = try Data(contentsOf: movie.resizedImageURL)
                 } catch {
                     print("Failed to load image")
                 }
-                let randomRating = (4...8).randomElement() ?? 0
+            // реализовал рандом на рейтинге
+                let randomRating = (6...9).randomElement() ?? 0
                 let rating = Float(movie.rating) ?? 0
                 
                 let text = "Рейтинг этого фильма больше чем \(randomRating)?"
