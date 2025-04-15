@@ -8,4 +8,3 @@ protocol StatisticServiceProtocol {
    
     func store(correct count: Int, total amount: Int)
 }
-
