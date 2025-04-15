@@ -21,10 +21,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
-        //questionFactory.delegate = self
-        questionFactory?.loadData()
-        //self.questionFactory = questionFactory
+         let questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
+      // let questionFactory = QuestionFactory()
+        questionFactory.delegate = self
+        questionFactory.loadData()
+        self.questionFactory = questionFactory
         let alertPresenter = AlertPresenter()
         alertPresenter.viewController = self
         self.alertPresenter = alertPresenter
