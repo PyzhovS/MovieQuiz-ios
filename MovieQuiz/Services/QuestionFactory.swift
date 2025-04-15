@@ -2,11 +2,11 @@ import UIKit
 class QuestionFactory:QuestionFactoryProtocol {
     
     weak var delegate: QuestionFactoryDelegate?
-    private let moviesLoader: MoviesLoader
+    private let moviesLoader: MoviesLoading
     private var movies: [MostPopularMovie] = []
     
     
-    init(delegate: QuestionFactoryDelegate?, moviesLoader: MoviesLoader) {
+    init(delegate: QuestionFactoryDelegate?, moviesLoader: MoviesLoading) {
         self.delegate = delegate
         self.moviesLoader = moviesLoader
     }
