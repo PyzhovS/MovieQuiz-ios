@@ -57,7 +57,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y2g-OU-mFW" userLabel="Question Label">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y2g-OU-mFW" userLabel="Question Label">
                                         <rect key="frame" x="0.0" y="592" width="362" height="0.0"/>
                                         <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                         <color key="textColor" name="YP White"/>
@@ -128,6 +128,8 @@
                     </view>
                     <connections>
                         <outlet property="ActivityIndicator" destination="LTI-WG-lpt" id="Ru5-uU-GPJ"/>
+                        <outlet property="buttonNo" destination="BtG-2o-EI9" id="3CP-ge-bZZ"/>
+                        <outlet property="buttonYes" destination="13k-Tf-GQe" id="QH4-iF-Cr2"/>
                         <outlet property="counterLabel" destination="YQ1-tb-wCz" id="WuS-gY-af2"/>
                         <outlet property="imageView" destination="cmn-i9-5wo" id="0XQ-Cb-i4L"/>
                         <outlet property="textLabel" destination="Y2g-OU-mFW" id="mDv-pi-cnC"/>
