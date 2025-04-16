@@ -12,12 +12,12 @@ class StatisticService: StatisticServiceProtocol {
     }
     
     private let storage: UserDefaults = .standard
-    
+ 
     var gamesCount: Int {
         get {storage.integer(forKey: Keys.gamesCount.rawValue)}
         set {storage.set(newValue , forKey: Keys.gamesCount.rawValue)}
     }
-   
+    
     var bestGame: GameResult {
         get {
             let correct = storage.integer(forKey: Keys.correct.rawValue)
