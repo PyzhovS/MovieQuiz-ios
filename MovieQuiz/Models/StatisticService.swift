@@ -12,7 +12,7 @@ class StatisticService: StatisticServiceProtocol {
     }
     
     private let storage: UserDefaults = .standard
- 
+    
     var gamesCount: Int {
         get {storage.integer(forKey: Keys.gamesCount.rawValue)}
         set {storage.set(newValue , forKey: Keys.gamesCount.rawValue)}
@@ -42,13 +42,13 @@ class StatisticService: StatisticServiceProtocol {
         get {storage.integer(forKey: Keys.answers.rawValue)}
         set {storage.set(newValue , forKey: Keys.answers.rawValue)}
     }
-        
+    
     func store(correct count: Int, total amount: Int) {
         gamesCount += 1
         let newGameResult = GameResult(correct: count, total: amount, date: Date())
         if newGameResult.correct > bestGame.correct {
             bestGame = newGameResult
-            }
+        }
         correctAnswers += count
     }
     

@@ -3,7 +3,7 @@ import UIKit
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - Properties
-  
+    
     @IBOutlet weak var ActivityIndicator: UIActivityIndicatorView!
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
@@ -22,8 +22,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-         let questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
-      // let questionFactory = QuestionFactory()
+        let questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
         questionFactory.delegate = self
         questionFactory.loadData()
         self.questionFactory = questionFactory
@@ -33,28 +32,30 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let statisticService = StatisticServiceImplementation()
         self.statisticService = statisticService
         showLoadingIndicator()
+        ActivityIndicator.hidesWhenStopped = true
         viewNext()
+        
     }
     
     // MARK: - QuestionFactoryDelegate
     func didLoadDataFromServer() {
-        ActivityIndicator.isHidden = true
+        showLoadingIndicator()
         questionFactory?.requestNextQuestion()
         
     }
     
     func didFailToLoadData(with error: Error) {
         showNetworkError(message:error.localizedDescription)
-       
+        
     }
     
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
-               return
-           }
-
-           currentQuestion = question
-           let viewModel = convert(model: question)
+            return
+        }
+        
+        currentQuestion = question
+        let viewModel = convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
         }
@@ -62,39 +63,38 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - Setup Methods
     private func showLoadingIndicator() {
-        ActivityIndicator.isHidden = false
         ActivityIndicator.startAnimating()
     }
     private func hideLoadingIndicator() {
-        ActivityIndicator.isHidden = true
         ActivityIndicator.stopAnimating()
     }
     
     private func viewNext () {
         questionFactory?.requestNextQuestion()
         imageView.layer.borderColor = UIColor.clear.cgColor
-     
+        
     }
     private func convert(model: QuizQuestion) -> QuizStepModel {
         let questionStep = QuizStepModel(
             image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
-       return questionStep
+        return questionStep
     }
-  
+    
     private func show(quiz step: QuizStepModel) {
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
-        startButtonTapped()
+        stopButtonTapped(isEnabled: true)
+        hideLoadingIndicator()
     }
-   
+    
     private func showAnswerResult(isCorrect: Bool) {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.cornerRadius = 20
-      
+        
         if isCorrect {
             imageView.layer.borderColor = UIColor.ypGreen.cgColor
             correctAnswers += 1
@@ -107,18 +107,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             showNextQuestionOrResults()
         }
     }
-   
+    
     // Добавил функцию, которая исключает лишнее нажатие на кнопки(при быстром нажатие), что приводила к неверному результату в конце.
-    private func stopButtonTapped() {
-          
-        buttonNo.isEnabled = false
-        buttonYes.isEnabled = false
-        }
-    private func startButtonTapped() {
+    private func stopButtonTapped(isEnabled: Bool) {
         
-        buttonNo.isEnabled = true
-        buttonYes.isEnabled = true
-        }
+        buttonNo.isEnabled = isEnabled
+        buttonYes.isEnabled = isEnabled
+    }
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
@@ -130,11 +125,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             Рекорд:\(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))
             Средняя точность:\(String(format: "%.2f", statisticService.totalAccuracy))%
             """
-           
+            
             let resultsModel = QuizResultsModel(title: "Этот раунд окончен!" ,
-                                         text: text,
-                                   buttonText:"Сыграть ещё раз")
-          
+                                                text: text,
+                                                buttonText:"Сыграть ещё раз")
+            
             showAlert(model: resultsModel)
             
             func showAlert ( model: QuizResultsModel){
@@ -142,23 +137,24 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                                         message: model.text,
                                         buttonText: model.buttonText,
                                         completion: {[weak self] in
-                   guard let self = self else { return }
+                    guard let self = self else { return }
                     self.currentQuestionIndex = 0
                     self.correctAnswers = 0
                     self.viewNext()
-                    startButtonTapped()
+                    stopButtonTapped(isEnabled: true)
                 })
-              
-                    self.alertPresenter?.show(quiz: final)
+                
+                self.alertPresenter?.show(quiz: final)
             }
         } else { currentQuestionIndex += 1
-        
-            self.viewNext()
             
-            }
+            self.viewNext()
+            showLoadingIndicator()
+            
+        }
     }
     
-    private func showNetworkError(message: String) {
+    func showNetworkError(message: String) {
         hideLoadingIndicator()
         
         let alertErorr = AlertModel(title: "Ошибка",
@@ -169,27 +165,27 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             self.viewNext()
-            startButtonTapped()
+            stopButtonTapped(isEnabled: true)
             
             //добавил, что бы при нажати на Попробуй еще раз, была повторная поытка подключения, а не просто белый экран.
             questionFactory?.loadData()
         })
         alertPresenter?.show(quiz: alertErorr)
     }
-  
+    
     // MARK: - Actions
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else {return}
         let result = true
-    showAnswerResult(isCorrect: result == currentQuestion.correctAnswer)
-     stopButtonTapped()
+        showAnswerResult(isCorrect: result == currentQuestion.correctAnswer)
+        stopButtonTapped(isEnabled: false)
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else {return}
         let result = false
         showAnswerResult(isCorrect: result == currentQuestion.correctAnswer)
-       stopButtonTapped()
+        stopButtonTapped(isEnabled: false)
     }
 }
