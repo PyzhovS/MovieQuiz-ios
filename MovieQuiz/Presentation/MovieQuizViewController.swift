@@ -4,7 +4,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - Properties
     
-    @IBOutlet weak var ActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak private var ActivityIndicator: UIActivityIndicatorView!
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
@@ -50,7 +50,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     func didReceiveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {
+        guard let question else {
             return
         }
         
@@ -86,7 +86,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
-        stopButtonTapped(isEnabled: true)
+        ButtonTapped(isEnabled: true)
         hideLoadingIndicator()
     }
     
@@ -103,14 +103,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             imageView.layer.borderColor = UIColor.ypRed.cgColor
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            guard let self = self else {return}
+            guard let self else {return}
             showNextQuestionOrResults()
         }
     }
     
-    // Добавил функцию, которая исключает лишнее нажатие на кнопки(при быстром нажатие), что приводила к неверному результату в конце.
-    private func stopButtonTapped(isEnabled: Bool) {
-        
+    private func ButtonTapped(isEnabled: Bool) {
         buttonNo.isEnabled = isEnabled
         buttonYes.isEnabled = isEnabled
     }
@@ -137,11 +135,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                                         message: model.text,
                                         buttonText: model.buttonText,
                                         completion: {[weak self] in
-                    guard let self = self else { return }
+                    guard let self else { return }
                     self.currentQuestionIndex = 0
                     self.correctAnswers = 0
                     self.viewNext()
-                    stopButtonTapped(isEnabled: true)
+                    ButtonTapped(isEnabled: true)
                 })
                 
                 self.alertPresenter?.show(quiz: final)
@@ -161,11 +159,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                                     message: message,
                                     buttonText: "Попробовать ещё раз",
                                     completion: { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             self.viewNext()
-            stopButtonTapped(isEnabled: true)
+            ButtonTapped(isEnabled: true)
             
             //добавил, что бы при нажати на Попробуй еще раз, была повторная поытка подключения, а не просто белый экран.
             questionFactory?.loadData()
@@ -176,16 +174,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Actions
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {return}
+        guard let currentQuestion else {return}
         let result = true
         showAnswerResult(isCorrect: result == currentQuestion.correctAnswer)
-        stopButtonTapped(isEnabled: false)
+        ButtonTapped(isEnabled: false)
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {return}
+        guard let currentQuestion else {return}
         let result = false
         showAnswerResult(isCorrect: result == currentQuestion.correctAnswer)
-        stopButtonTapped(isEnabled: false)
+        ButtonTapped(isEnabled: false)
     }
 }
