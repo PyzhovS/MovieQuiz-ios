@@ -10,9 +10,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var counterLabel: UILabel!
     @IBOutlet private var buttonYes: UIButton!
     @IBOutlet private var buttonNo: UIButton!
-  //  private var currentQuestionIndex = 0
     private var correctAnswers = 0
-   // private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenterProtocol?
@@ -33,6 +31,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         self.alertPresenter = alertPresenter
         let statisticService = StatisticServiceImplementation()
         self.statisticService = statisticService
+        presenter.viewController = self
         showLoadingIndicator()
         ActivityIndicator.hidesWhenStopped = true
         viewNext()
@@ -76,14 +75,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.borderColor = UIColor.clear.cgColor
         
     }
- /*   private func convert(model: QuizQuestion) -> QuizStepModel {
-        let questionStep = QuizStepModel(
-            image: UIImage(data: model.image) ?? UIImage(),
-            question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
-        return questionStep
-    }
-  */
+
     private func show(quiz step: QuizStepModel) {
         imageView.image = step.image
         textLabel.text = step.question
@@ -92,7 +84,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         hideLoadingIndicator()
     }
     
-    private func showAnswerResult(isCorrect: Bool) {
+     func showAnswerResult(isCorrect: Bool) {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.cornerRadius = 20
@@ -110,7 +102,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
-    private func ButtonTapped(isEnabled: Bool) {
+    func ButtonTapped(isEnabled: Bool) {
         buttonNo.isEnabled = isEnabled
         buttonYes.isEnabled = isEnabled
     }
@@ -150,7 +142,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             
             self.viewNext()
             showLoadingIndicator()
-            
         }
     }
     
@@ -166,8 +157,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self.correctAnswers = 0
             self.viewNext()
             ButtonTapped(isEnabled: true)
-            
-            //добавил, что бы при нажати на Попробуй еще раз, была повторная поытка подключения, а не просто белый экран.
             questionFactory?.loadData()
         })
         alertPresenter?.show(quiz: alertErorr)
@@ -176,16 +165,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Actions
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion else {return}
-        let result = true
-        showAnswerResult(isCorrect: result == currentQuestion.correctAnswer)
-        ButtonTapped(isEnabled: false)
+        presenter.currentQuestion = currentQuestion
+        presenter.yesButtonClicked()
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion else {return}
-        let result = false
-        showAnswerResult(isCorrect: result == currentQuestion.correctAnswer)
-        ButtonTapped(isEnabled: false)
+        presenter.currentQuestion = currentQuestion
+        presenter.noButtonClicked()
     }
 }
