@@ -45,7 +45,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         currentQuestionIndex = 0
         correctAnswers = 0
         questionFactory?.requestNextQuestion()
-        questionFactory?.loadData()
+       
     }
     
     func switchToNextQuestion() {
@@ -53,6 +53,10 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         viewController?.showLoadingIndicator()
         questionFactory?.requestNextQuestion()
         viewController?.borderColorClear()
+    }
+    //нужен для повторной загрузки картинки когда выходит Алерт
+    func restartImageDate() {
+    questionFactory?.loadData()
     }
     
     func showAnswer(isCorrect: Bool) {

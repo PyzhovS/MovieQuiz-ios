@@ -84,6 +84,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
                                     completion: { [weak self] in
             guard let self else { return }
             self.presenter.restartGame()
+            presenter.restartImageDate()
             borderColorClear()
             ButtonTapped(isEnabled: true)
         })
