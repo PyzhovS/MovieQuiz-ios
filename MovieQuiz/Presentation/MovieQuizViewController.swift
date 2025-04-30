@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
     
     // MARK: - Properties
     
@@ -29,6 +29,7 @@ final class MovieQuizViewController: UIViewController {
     }
     
     // MARK: - Setup Methods
+    
     func showLoadingIndicator() {
         ActivityIndicator.startAnimating()
     }
@@ -85,7 +86,6 @@ final class MovieQuizViewController: UIViewController {
             self.presenter.restartGame()
             borderColorClear()
             ButtonTapped(isEnabled: true)
-            presenter.questionFactory?.loadData()
         })
         alertPresenter?.show(quiz: alertErorr)
     }

@@ -1,26 +1,23 @@
 import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
-    
-    
-    
+
     // MARK: - Properties
     
-    var currentQuestion: QuizQuestion?
-    weak var viewController: MovieQuizViewController?
-    var statisticService: StatisticServiceProtocol?
-    var questionFactory: QuestionFactoryProtocol?
+    private weak var viewController: MovieQuizViewControllerProtocol?
+    private var statisticService: StatisticServiceProtocol?
+    private var questionFactory: QuestionFactoryProtocol?
     
-    
-    init(viewController: MovieQuizViewController) {
+    init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
         statisticService = StatisticService()
         questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
         questionFactory?.loadData()
     }
-    
+    // убрал private что бы провести тестирование в MovieQuizUITestsConvert
+    private var currentQuestion: QuizQuestion?
     var currentQuestionIndex = 0
-    let questionsAmount: Int = 5
+    let questionsAmount: Int = 10
     var correctAnswers = 0
     
     // MARK: - QuestionFactoryDelegate
@@ -32,7 +29,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     func didFailToLoadData(with error: Error) {
         showNetworkError(message:error.localizedDescription)
-        
     }
     
     func showNetworkError(message: String) {
@@ -49,6 +45,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         currentQuestionIndex = 0
         correctAnswers = 0
         questionFactory?.requestNextQuestion()
+        questionFactory?.loadData()
     }
     
     func switchToNextQuestion() {

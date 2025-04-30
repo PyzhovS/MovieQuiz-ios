@@ -75,22 +75,12 @@ final class MovieQuizUITests: XCTestCase {
             let indexLabel = app.staticTexts["Index"]
             XCTAssertEqual(indexLabel.label, "1/10")
             sleep(3)
-            
-            
-         
         }
-        
-    func testAlertDismiss() {
-        
-    }
-        
+      
     @MainActor
     func testExample() throws {
-        // UI tests must launch the application that they test.
         let app = XCUIApplication()
         app.launch()
-        
-        
     }
     
 }
