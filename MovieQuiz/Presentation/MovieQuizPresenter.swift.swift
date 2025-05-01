@@ -116,8 +116,8 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             let text = """
              Ваш результат: \(correctAnswers)/\( questionsAmount )
              Количество сыграных квизов:\(statisticService.gamesCount)
-             Рекорд:\(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))
-             Средняя точность:\(String(format: "%.2f", statisticService.totalAccuracy))%
+             Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))
+             Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
              """
             
             let resultsModel = QuizResultsModel(title: "Этот раунд окончен!" ,
