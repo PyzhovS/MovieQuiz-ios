@@ -115,7 +115,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             guard let statisticService else { return }
             let text = """
              Ваш результат: \(correctAnswers)/\( questionsAmount )
-             Количество сыграных квизов:\(statisticService.gamesCount)
+             Количество сыграных квизов: \(statisticService.gamesCount)
              Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))
              Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
              """
