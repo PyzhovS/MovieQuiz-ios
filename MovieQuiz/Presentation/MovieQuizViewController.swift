@@ -45,7 +45,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
-        ButtonTapped(isEnabled: true)
+        buttonTapped(isEnabled: true)
         hideLoadingIndicator()
     }
     
@@ -56,7 +56,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor: UIColor.ypRed.cgColor
     }
     
-    func ButtonTapped(isEnabled: Bool) {
+    func buttonTapped(isEnabled: Bool) {
         buttonNo.isEnabled = isEnabled
         buttonYes.isEnabled = isEnabled
     }
@@ -69,7 +69,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
             guard let self else { return }
             self.presenter.restartGame()
             borderColorClear()
-            ButtonTapped(isEnabled: true)
+            buttonTapped(isEnabled: true)
         })
         
         self.alertPresenter?.show(quiz: final)
@@ -86,7 +86,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
             self.presenter.restartGame()
             presenter.restartImageDate()
             borderColorClear()
-            ButtonTapped(isEnabled: true)
+            buttonTapped(isEnabled: true)
         })
         alertPresenter?.show(quiz: alertErorr)
     }

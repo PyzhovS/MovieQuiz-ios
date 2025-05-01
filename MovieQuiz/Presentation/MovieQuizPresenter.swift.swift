@@ -85,7 +85,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         guard let currentQuestion else {return}
         let result = isYes
         showAnswerResult(isCorrect: result == currentQuestion.correctAnswer)
-        viewController?.ButtonTapped(isEnabled: false)
+        viewController?.buttonTapped(isEnabled: false)
     }
     
     func showAnswerResult(isCorrect: Bool) {
