@@ -3,7 +3,7 @@ import UIKit
 final class MovieQuizPresenter: QuestionFactoryDelegate {
 
     // MARK: - Properties
-    
+    private var currentQuestion: QuizQuestion?
     private weak var viewController: MovieQuizViewControllerProtocol?
     private var statisticService: StatisticServiceProtocol?
     private var questionFactory: QuestionFactoryProtocol?
@@ -15,7 +15,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         questionFactory?.loadData()
     }
     // убрал private что бы провести тестирование в MovieQuizUITestsConvert
-    private var currentQuestion: QuizQuestion?
+    
     var currentQuestionIndex = 0
     let questionsAmount: Int = 10
     var correctAnswers = 0
@@ -54,7 +54,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         questionFactory?.requestNextQuestion()
         viewController?.borderColorClear()
     }
-    //нужен для повторной загрузки картинки когда выходит Алерт
+    
     func restartImageDate() {
     questionFactory?.loadData()
     }
