@@ -14,7 +14,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         questionFactory = QuestionFactory(delegate: self, moviesLoader: MoviesLoader())
         questionFactory?.loadData()
     }
-    // убрал private что бы провести тестирование в MovieQuizUITestsConvert
     
     var currentQuestionIndex = 0
     let questionsAmount: Int = 10

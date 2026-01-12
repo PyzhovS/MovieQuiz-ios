@@ -9,6 +9,7 @@ class StatisticService: StatisticServiceProtocol {
         case total
         case date
         case answers
+        
     }
     
     private let storage: UserDefaults = .standard
